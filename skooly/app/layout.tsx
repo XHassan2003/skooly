@@ -4,6 +4,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import HeaderWrapper from "@/components/layout/header-wrapper";
 import Footer from "@/components/layout/footer";
+import QueryProvider from "@/components/providers/query-provider";
+
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -26,9 +28,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${outfit.className} antialiased`}>
+          <QueryProvider>
           <HeaderWrapper />
           {children}
           <Footer />
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>

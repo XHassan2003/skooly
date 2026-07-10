@@ -45,7 +45,7 @@ export default function CommunitiesPage() {
   const { data: user } = useCurrentUser();
   const isPro = user?.isPro;
 
-  const showLockIcon = numberOfCommunities >= 3 && !isPro;
+  const showLockIcon = numberOfCommunities >= 5 && !isPro;
 
   return (
     <div className="grid gap-6 lg:grid-cols-3">
@@ -125,6 +125,7 @@ export default function CommunitiesPage() {
           ) : (
             <AIMatching
               totalGoals={communityGoals?.length || 0}
+              selectedCommunityId={selectedCommunity!}
             />
           )}
         </CardContent>

@@ -3,7 +3,8 @@ import { handle } from "hono/vercel";
 import { auth } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
 import { communitiesApp } from "@/app/server/community-routes";
-import { learningGoalsApp } from "@/app/server/learning-goals-route";
+import { learningGoalsApp } from "@/app/server/learning-goals-routes";
+import { matchesApp } from "@/app/server/matches-routes";
 
 type Variables = {
   userId: string;
@@ -49,7 +50,8 @@ app.use("/*", async (c, next) => {
 
 const routes = app
   .route("/communities", communitiesApp)
-  .route("/communities", learningGoalsApp);
+  .route("/communities", learningGoalsApp)
+  .route("/matches", matchesApp);
 
 export type AppType = typeof routes;
 

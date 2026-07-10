@@ -36,7 +36,7 @@ export default function AllCommunitiesPage() {
     );
   };
 
-  const showLockIcon = numberOfCommunities >= 3 && !isPro;
+  const showLockIcon = numberOfCommunities >= 5 && !isPro;
 
   const joinCommunityMutation = useJoinCommunity();
 

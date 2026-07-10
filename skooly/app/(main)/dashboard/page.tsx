@@ -1,4 +1,6 @@
 "use client";
+
+import { useState } from "react";
 import StatsCard from "@/components/dashboard/stats-card";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +18,7 @@ import Link from "next/link";
 
 export default function DashboardPage() {
   const user = useUser();
+
   const {
     data: userCommunities,
     isLoading: isLoadingUserCommunities,
@@ -28,11 +31,13 @@ export default function DashboardPage() {
     },
   });
 
-  const pendingMatches = 6;
+  // Temporary dummy value
+  const [pendingMatches] = useState<number>(6);
 
   if (isLoadingUserCommunities) {
     return <div>Loading...</div>;
   }
+
   if (errorUserCommunities) {
     return <div>Error: {errorUserCommunities.message}</div>;
   }
@@ -63,6 +68,7 @@ export default function DashboardPage() {
           </Link>
         </CardContent>
       </Card>
+
       <div className="grid gap-4 md:grid-cols-4">
         <StatsCard
           title="Your Communities"
@@ -78,34 +84,35 @@ export default function DashboardPage() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center">
-                <MessageCircleIcon className="size-4 mr-2 text-primary" />
+                <MessageCircleIcon className="mr-2 size-4 text-primary" />
                 Recent Chats
               </CardTitle>
               <Link href="/chat">
                 <Button variant="outline" size="sm">
-                  <UsersIcon className="size-4 mr-2 text-primary" />
+                  <UsersIcon className="mr-2 size-4 text-primary" />
                   View All
                 </Button>
               </Link>
             </div>
-            <CardDescription>Communities you&apos;re part of</CardDescription>
+            <CardDescription>Communities you're part of</CardDescription>
           </CardHeader>
         </Card>
+
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center">
-                <UsersIcon className="size-4 mr-2 text-primary" />
+                <UsersIcon className="mr-2 size-4 text-primary" />
                 Communities
               </CardTitle>
               <Link href="/communities">
                 <Button variant="outline" size="sm">
-                  <UsersIcon className="size-4 mr-2 text-primary" />
+                  <UsersIcon className="mr-2 size-4 text-primary" />
                   Manage
                 </Button>
               </Link>
             </div>
-            <CardDescription>Communities you&apos;re part of</CardDescription>
+            <CardDescription>Communities you're part of</CardDescription>
           </CardHeader>
 
           <CardContent>

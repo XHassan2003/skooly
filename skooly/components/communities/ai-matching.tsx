@@ -1,6 +1,24 @@
+import { useAiPartners } from "@/hooks/use-ai-partner";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
-export default function AIMatching({ totalGoals }: { totalGoals: number }) {
+export default function AIMatching({
+  totalGoals,
+  selectedCommunityId,
+}: {
+  totalGoals: number;
+  selectedCommunityId: string;
+}) {
+  const aiPartnerMutation = useAiPartners();
+  const handleFindPartners = async () => {
+    try {
+      await aiPartnerMutation.mutateAsync(selectedCommunityId);
+      toast.success("AI partner found! Check your matches.");
+    } catch (error) {
+      toast.error("Failed to find AI partner. Please try again.");
+      console.log("Error finding AI partner", error);
+    }
+  };
   return (
     <div className="text-center py-8">
       <div className="mb-4">
@@ -10,7 +28,11 @@ export default function AIMatching({ totalGoals }: { totalGoals: number }) {
           with the most compatible learning partners in this community.
         </p>
       </div>
-      <Button size="lg" disabled={totalGoals === 0}>
+      <Button
+        size="lg"
+        disabled={totalGoals === 0}
+        onClick={handleFindPartners}
+      >
         🤖 Find Partners with AI
       </Button>
       {totalGoals > 0 && (

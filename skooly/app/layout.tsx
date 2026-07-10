@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import HeaderWrapper from "@/components/layout/header-wrapper";
 import Footer from "@/components/layout/footer";
 import QueryProvider from "@/components/providers/query-provider";
+import { Toaster } from "sonner";
 
 
 const outfit = Outfit({
@@ -33,6 +34,7 @@ export default function RootLayout({
           {children}
           <Footer />
           </QueryProvider>
+          <Toaster position="top-right"/>
         </body>
       </html>
     </ClerkProvider>

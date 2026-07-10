@@ -1,10 +1,12 @@
+import { auth } from "@clerk/nextjs/server";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { auth } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
 import { communitiesApp } from "@/app/server/community-routes";
 import { learningGoalsApp } from "@/app/server/learning-goals-routes";
 import { matchesApp } from "@/app/server/matches-routes";
+import { conversationsApp } from "@/app/server/coversations-routes";
+import { userApp } from "@/app/server/user-routes";
 
 type Variables = {
   userId: string;
@@ -12,13 +14,15 @@ type Variables = {
 
 const app = new Hono<{ Variables: Variables }>().basePath("/api");
 
-// error handler
+//error handler
 app.onError((err, c) => {
   console.error("API Error:", err);
+
   if (err instanceof HTTPException) {
     return err.getResponse();
   }
-  // database errors
+
+  //database errr
   if (err instanceof Error) {
     if (
       err.message.includes("violates") ||
@@ -26,22 +30,27 @@ app.onError((err, c) => {
     ) {
       return c.json({ error: "Invalid data provided" }, 400);
     }
-    if (err.message.includes("not found") || err.message.includes("No Found")) {
+
+    if (
+      err.message.includes("not found") ||
+      err.message.includes("Not found")
+    ) {
       return c.json({ error: err.message }, 404);
     }
   }
+
   return c.json({ error: "Internal Server Error" }, 500);
 });
 
 // middleware
 app.use("/*", async (c, next) => {
   const publicRoutes = ["/api/communities/all"];
-  if (publicRoutes.includes(c.req.url)) {
+  if (publicRoutes.includes(c.req.path)) {
     return await next();
   }
 
   const session = await auth();
-  if (!session || !session.userId) {
+  if (!session.userId) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
   c.set("userId", session.userId);
@@ -51,7 +60,9 @@ app.use("/*", async (c, next) => {
 const routes = app
   .route("/communities", communitiesApp)
   .route("/communities", learningGoalsApp)
-  .route("/matches", matchesApp);
+  .route("/matches", matchesApp)
+  .route("/conversations", conversationsApp)
+  .route("/user", userApp);
 
 export type AppType = typeof routes;
 

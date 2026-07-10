@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { useMatches, useAcceptMatch } from "@/hooks/use-ai-partner";
+import { useAcceptMatch, useMatches } from "@/hooks/use-ai-partner";
 import { useCurrentUser } from "@/hooks/use-users";
 import { useRouter } from "next/navigation";
 
@@ -25,7 +25,7 @@ export default function ChatPage() {
   if (errorMatches) return <div>Error: {errorMatches.message}</div>;
 
   const acceptedMatches = matches?.filter(
-    (match) => match.status === "accepted",
+    (match) => match.status === "accepted"
   );
   const pendingMatches = matches?.filter((match) => match.status === "pending");
 
@@ -93,8 +93,8 @@ export default function ChatPage() {
                 </div>
                 <Button
                   className="w-full shrink-0 mt-2"
-                    onClick={() => acceptMatchMutation.mutate(match.id)}
-                    disabled={acceptMatchMutation.isPending}
+                  onClick={() => acceptMatchMutation.mutate(match.id)}
+                  disabled={acceptMatchMutation.isPending}
                 >
                   {acceptMatchMutation.isPending
                     ? "Accepting..."
